@@ -1,0 +1,27 @@
+schema{
+    query:Query
+    mutation:Mutation
+}
+
+type Query{
+    allEmp: [Employee]
+    empById(id: Int) : Employee
+}
+
+type Mutation{
+    saveEmp(emp: EmployeeInput):Employee
+    deleteEmp(id:Int):Boolean
+}
+
+type Employee{
+    id: String
+    age: Int
+    name: String
+    department: String
+}
+
+input EmployeeInput{
+    age: Int
+    name: String
+    department: String
+}
