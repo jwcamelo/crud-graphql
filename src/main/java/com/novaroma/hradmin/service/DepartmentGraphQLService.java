@@ -12,24 +12,19 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-
 import java.io.IOException;
-
 @Service
-public class EmployeeGraphQLService {
+public class DepartmentGraphQLService {
     @Value("classpath:employee.graphqls")
     private Resource resource;
     @Autowired
-    private FetchAllEmployee fetchAllEmployee;
-
+    private FetchAllDepartment fetchAllDepartment;
     @Autowired
-    private FetchEmployeeById fetchEmployeeById;
-
+    private FetchDepartmentById fetchDepartmentById;
     @Autowired
-    private FetchSaveEmployee fetchSaveEmployee;
-
+    private FetchSaveDepartment fetchSaveDepartment;
     @Autowired
-    private FetchDeleteEmployee fetchDeleteEmployee;
+    private FetchDeleteDepartment fetchDeleteDepartment;
 
     private GraphQL graphQL;
 
@@ -38,11 +33,11 @@ public class EmployeeGraphQLService {
         TypeDefinitionRegistry typeDefinitionRegistry = new SchemaParser().parse(resource.getFile());
         RuntimeWiring runtimeWiring=RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring-> typeWiring
-                        .dataFetcher("allEmp",fetchAllEmployee)
-                        .dataFetcher("empById",fetchEmployeeById))
+                        .dataFetcher("allDep",fetchAllDepartment)
+                        .dataFetcher("depById",fetchDepartmentById))
                 .type("Mutation", typeWiring-> typeWiring
-                        .dataFetcher("saveEmp", fetchSaveEmployee)
-                        .dataFetcher("deleteEmp", fetchDeleteEmployee)
+                        .dataFetcher("saveDep", fetchSaveDepartment)
+                        .dataFetcher("deleteDep", fetchDeleteDepartment)
                 )
                 .build();
         GraphQLSchema graphQLSchema=new SchemaGenerator().makeExecutableSchema(typeDefinitionRegistry,runtimeWiring);

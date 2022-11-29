@@ -1,6 +1,8 @@
 package com.novaroma.hradmin.controller;
 
+import com.novaroma.hradmin.model.Department;
 import com.novaroma.hradmin.model.Employee;
+import com.novaroma.hradmin.repository.DepartmentRepository;
 import com.novaroma.hradmin.repository.EmployeeRepository;
 import com.novaroma.hradmin.service.EmployeeGraphQLService;
 import graphql.ExecutionResult;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -25,9 +28,10 @@ public class EmployeeController {
     private static final Logger LOGGER= LoggerFactory.getLogger(EmployeeController.class);
     @Autowired
     private EmployeeGraphQLService service;
-
     @Autowired
     private EmployeeRepository repo;
+    @Autowired
+    private DepartmentRepository depRepo;
 
     @PostMapping
     public ResponseEntity<ExecutionResult> getAllEmployee(@RequestBody String query){
@@ -42,11 +46,22 @@ public class EmployeeController {
 
     @PostConstruct
     private void saveEmployeeData(){
+        List<Department> depList = new ArrayList<>();
+        Department itDep = new Department("IT", "It uses the latest tech to keep " +
+                "communication lines running smoothly and protect critical data");
+        Department hrDep = new Department("HR", "Responsible for managing the employee life cycle and administering employee benefits.");
+        Department admDep = new Department("Administration", "provides administrative and technical support in the areas of human " +
+                "resources (HR), budgetary, strategic planning, legal affairs, calls for tenders, " +
+                "facilities and security.");
+
+        depList.addAll(Arrays.asList(itDep,hrDep,admDep));
+        depRepo.saveAll(depList);
+
         List<Employee> empList=new ArrayList<>();
-        empList.add(new Employee(22, "Amit Reena", "CS"));
-        empList.add(new Employee(43, "Cejay McLamb", "CS"));
-        empList.add(new Employee(18, "Sahari Patel", "IT"));
-        empList.add(new Employee(28, "Deville Sudhra", "Mech"));
+        empList.add(new Employee(22, "Amit Reena", itDep));
+        empList.add(new Employee(43, "Cejay McLamb", hrDep));
+        empList.add(new Employee(18, "Sahari Patel", admDep));
+        empList.add(new Employee(28, "Deville Sudhra", admDep));
 
         repo.saveAll(empList);
     }

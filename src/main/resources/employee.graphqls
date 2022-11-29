@@ -4,24 +4,41 @@ schema{
 }
 
 type Query{
-    allEmp: [Employee]
-    empById(id: Int) : Employee
+    allEmp:[Employee]
+    empById(id: Int):Employee
+    allDep:[Department]
+    depById(id:Int):Department
 }
 
 type Mutation{
-    saveEmp(emp: EmployeeInput):Employee
+    saveEmp(employee: EmployeeInput):Employee
     deleteEmp(id:Int):Boolean
+    saveDep(department: DepartmentInput):Department
+    deleteDep(id:Int):Boolean
 }
 
 type Employee{
-    id: String
+    id: Int
     age: Int
     name: String
-    department: String
+    department: Department
 }
 
 input EmployeeInput{
+    id: Int
     age: Int
     name: String
-    department: String
+    idDepartment: Int
+}
+
+type Department{
+    id: Int
+    name: String
+    description: String
+}
+
+input DepartmentInput{
+    id: Int
+    name: String
+    description: String
 }

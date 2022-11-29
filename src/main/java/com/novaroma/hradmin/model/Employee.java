@@ -23,9 +23,10 @@ public class Employee {
 
     private String name;
 
-    private String department;
+    @ManyToOne
+    private Department department;
 
-    public Employee(Integer age, String name, String department){
+    public Employee(Integer age, String name, Department department){
         this.age = age;
         this.name = name;
         this.department = department;
